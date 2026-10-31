@@ -1,0 +1,202 @@
+﻿<Window x:Class="Co2Pet.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Grid Pet" Height="300" Width="300"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" ShowInTaskbar="False"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border x:Name="PetPanel" Margin="3"
+            Background="#E6FFFFFF"
+            BorderBrush="#333333"
+            BorderThickness="3"
+            CornerRadius="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="190"/>
+                <RowDefinition Height="65"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="SettingsButton"
+                    Grid.Row="0"
+                    Content="⚙"
+                    Width="26"
+                    Height="26"
+                    Margin="34,2,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="10"
+                    Padding="0"
+                    FontSize="16"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="SettingsButton_Click"
+                    ToolTip="Settings"/>
+            <Button x:Name="InfoButton"
+                    Grid.Row="0"
+                    Content="ⓘ"
+                    Width="26"
+                    Height="26"
+                    Margin="64,2,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="10"
+                    Padding="0"
+                    FontSize="16"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="InfoButton_Click"
+                    ToolTip="Live data"/>
+            <Border x:Name="SettingsPanel"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Width="110"
+                    Height="120"
+                    Margin="34,31,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="10"
+                    Background="#F2FFFFFF"
+                    BorderBrush="#333333"
+                    BorderThickness="1"
+                    Visibility="Hidden">
+                <StackPanel Margin="4">
+                    <TextBlock Text="Accessory" FontSize="11"/>
+                    <ComboBox x:Name="AccessorySelector"
+                              Height="24"
+                              SelectionChanged="AccessorySelector_SelectionChanged"
+                              ToolTip="Test accessories">
+                        <ComboBoxItem Content="Beanie"/>
+                        <ComboBoxItem Content="Top Hat"/>
+                        <ComboBoxItem Content="Sun Hat"/>
+                        <ComboBoxItem Content="None"/>
+                    </ComboBox>
+                    <CheckBox x:Name="SoundToggle"
+                              Content="Sound effects"
+                              IsChecked="True"
+                              FontSize="11"
+                              Margin="0,4,0,0"
+                              Checked="SoundToggle_Changed"
+                              Unchecked="SoundToggle_Changed"/>
+                    <Button Content="Refresh data"
+                            Height="22"
+                            Margin="0,4,0,0"
+                            Click="RefreshDataButton_Click"/>
+                </StackPanel>
+            </Border>
+            <Border x:Name="InfoPanel"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Width="170"
+                    Height="155"
+                    Margin="64,31,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="10"
+                    Background="#F2FFFFFF"
+                    BorderBrush="#333333"
+                    BorderThickness="1"
+                    Visibility="Hidden">
+                <StackPanel Margin="6">
+                    <TextBlock Text="Live data" FontWeight="Bold" FontSize="12"/>
+                    <TextBlock x:Name="CO2Text" Text="CO2: Loading..." FontSize="11"/>
+                    <TextBlock x:Name="TemperatureText" Text="Temp: Loading..." FontSize="11"/>
+                    <TextBlock x:Name="InfoWindText" Text="Wind: Loading..." FontSize="11"/>
+                </StackPanel>
+            </Border>
+
+            <Viewbox Grid.Row="1" Width="250" Height="185" HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+                <Grid Background="Transparent" Height="120" Margin="0,0,0,10" Width="120"
+                      x:Name="DinoContainer" MouseLeftButtonDown="DinoContainer_MouseLeftButtonDown"
+                      RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="PetRotation" CenterX="50" CenterY="80"/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="PetRotation"
+                                                 Storyboard.TargetProperty="Angle"
+                                                 x:Name="PetRockAnimation"
+                                                 From="-3" To="3"
+                                                 Duration="0:0:1.5"
+                                                 AutoReverse="True"
+                                                 RepeatBehavior="Forever"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Path x:Name="PetPath"
+                      Fill="#7ED957"
+                      Stretch="Fill"
+                      Data="M 5 70 Q 25 65 35 55 Q 50 45 68 45 Q 76 45 80 25 Q 80 5 90 5 L 95 5 Q 98 5 98 10 L 90 12 Q 85 25 85 50 L 85 82 A 7 7 0 0 1 71 82 L 71 72 Q 58 70 45 72 L 45 82 A 7 7 0 0 1 31 82 L 31 70 Q 15 75 5 70 Z"/>
+                <Canvas x:Name="BeanieHatContainer" Margin="94,-7,0,0" Visibility="Hidden">
+                    <Canvas.RenderTransform>
+                        <RotateTransform Angle="-10"/>
+                    </Canvas.RenderTransform>
+                    <Path x:Name="BeanieHat"
+                          Data="M 1 10 Q 5 0 9 0 Q 13 0 17 10 Z"
+                          Fill="#FF4500"/>
+                    <Ellipse Width="5" Height="5" Fill="#FF4500" Canvas.Left="6.5"
+                             Canvas.Top="-5"/>
+                </Canvas>
+                <Path x:Name="SunHat"
+                      Data="M 0 8 Q 7 4 14 8 L 14 10 L 0 10 Z M 4 8 L 5 0 L 10 0 L 11 8 Z"
+                      Fill="#FFD54F"
+                      Margin="94,-5,0,0"
+                      Visibility="Hidden">
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="-20"/>
+                    </Path.RenderTransform>
+                </Path>
+                <Path x:Name="TopHat"
+                      Data="M 0 12 L 24 12 L 24 14 L 0 14 Z M 5 12 L 5 0 L 19 0 L 19 12 Z"
+                      Fill="#222"
+                      Margin="94,-11,0,0"
+                      Visibility="Hidden">
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="-10"/>
+                    </Path.RenderTransform>
+                </Path>
+                <Ellipse Fill="#333" Height="4" HorizontalAlignment="Left"
+                         Margin="106,1,0,0" VerticalAlignment="Top" Width="4"
+                         x:Name="DinoEye"/>
+                <Path Data="M 0 0 Q 4 2 8 0" Fill="Transparent"
+                      HorizontalAlignment="Left" Margin="109,6,0,0"
+                      Stroke="#333" StrokeThickness="1.5"
+                      VerticalAlignment="Top" x:Name="MouthPath"/>
+                </Grid>
+            </Viewbox>
+
+            <Button Grid.Row="0" Content="×" Width="28" Height="28"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="4,2,0,0" Padding="0" FontSize="20" FontWeight="Bold"
+                    Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                    ToolTip="Close" Click="CloseButton_Click"/>
+
+            <Border x:Name="DialogBox" Grid.Row="2" VerticalAlignment="Bottom"
+                    Margin="10,0,10,6" Height="65" Visibility="Hidden"
+                    BorderBrush="LightGray" BorderThickness="3">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#0000A0" Offset="0"/>
+                        <GradientStop Color="#000033" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <TextBlock x:Name="DialogText" Foreground="White"
+                               TextWrapping="Wrap" Margin="6,4,20,4"
+                               FontSize="13"/>
+                    <Polygon x:Name="ContinueIndicator" Points="0,0 10,0 5,6"
+                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                             Fill="White" Margin="0,0,6,6"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
