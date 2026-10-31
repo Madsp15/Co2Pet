@@ -1,6 +1,6 @@
 # Co2Pet
 
-![Co2Pet screenshot](img.png)
+![Co2Pet screenshot](https://raw.githubusercontent.com/Madsp15/Co2Pet/main/img.png)
 
 Co2Pet is a small WPF desktop companion that turns live energy and weather data into an animated dinosaur pet. The widget is borderless, transparent, always on top, draggable, and available from the Windows system tray.
 
